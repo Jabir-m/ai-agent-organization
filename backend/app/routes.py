@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from app.llm import generate_response
 from app.store import create_plan, create_task, list_tasks, update_task_status
@@ -50,5 +50,5 @@ async def create_task_route(request: ChatRequest):
 @router.patch("/tasks/{task_id}/status")
 async def update_status(task_id: str, update: TaskStatusUpdate):
     if update.task_id != task_id:
-        raise ValueError("Task ID mismatch")
+        raise HTTPException(status_code=400, detail="Task ID mismatch")
     return {"task": update_task_status(task_id, update.status)}

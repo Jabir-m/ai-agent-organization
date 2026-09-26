@@ -19,7 +19,7 @@ export default function App() {
   }, [])
 
   const handleGeneratePlan = async () => {
-    const res = await fetch('http://localhost:8001/agent/plan', {
+    const res = await fetch('http://localhost:8000/tasks/plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ goal, context: 'Hermes org dashboard' }),
