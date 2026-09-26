@@ -1,18 +1,31 @@
 # AI Agent Organization
 
-This repository contains a Hermes-style AI agent foundation with:
+A Hermes-style organization agent platform with:
 - backend orchestration service
-- API layer
-- MCP server
-- Ollama integration
-- SOUL and SKILL documents
+- API gateway
+- MCP tool server
+- Postgres + Redis state
+- Ollama LLM integration
+- lightweight frontend dashboard
+- operating documents for SOUL and SKILL
 
 ## Architecture
 
-- `backend/` hosts the core reasoning and LLM orchestration service.
-- `api/` exposes an HTTP API for the organization-facing interface.
-- `mcp-server/` provides the Model Context Protocol server tools.
-- `docs/` contains the operating identity and capability definition.
+- `backend/` orchestrates planning, task routing, and LLM reasoning.
+- `api/` exposes HTTP access for the organization and dashboard.
+- `mcp-server/` exposes MCP-compatible tool functions and execution endpoints.
+- `frontend/` provides a simple dashboard for goals, tasks, and service health.
+- `database/` contains initialization scripts for Postgres.
+
+## Features
+
+- Hermes-inspired operating identity
+- Task planning and execution workflow
+- MCP tool registry
+- Ollama-based reasoning for agent responses
+- Postgres persistence for organization state
+- Redis for caching and fast coordination
+- dashboard UI for monitoring agent health and tasks
 
 ## Quick start
 
@@ -20,14 +33,21 @@ This repository contains a Hermes-style AI agent foundation with:
 docker compose up --build
 ```
 
-Then verify:
-- API: http://localhost:8000/health
-- Backend: http://localhost:8001/health
-- MCP: http://localhost:9000/health
+Then open:
+- API: http://localhost:8000
+- Backend: http://localhost:8001/docs
+- MCP Server: http://localhost:9000/docs
+- Dashboard: http://localhost:5173
+
+## Service health checks
+
+```bash
+curl http://localhost:8000/health
+curl http://localhost:8001/health
+curl http://localhost:9000/health
+```
 
 ## Ollama setup
-
-Install and start Ollama locally, then pull a model:
 
 ```bash
 ollama pull llama3.1
@@ -35,10 +55,4 @@ ollama pull llama3.1
 
 ## Notes
 
-This is a starter scaffold. You can extend it with:
-- PostgreSQL
-- Redis
-- vector memory
-- scheduling or workers
-- auth and role management
-- dashboards or admin consoles
+This project is intended as a strong starter foundation for a company-grade AI orchestration layer. It can be extended with authentication, workflows, multi-agent team roles, and production observability.

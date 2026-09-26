@@ -23,3 +23,7 @@ Thumbs.db
 
 # Build / logs
 *.log
+
+# Node
+node_modules/
+frontend/dist/

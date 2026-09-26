@@ -1,6 +1,27 @@
 version: "3.9"
 
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agent-postgres
+    environment:
+      POSTGRES_DB: agent_org
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: agent-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
@@ -19,6 +40,8 @@ services:
     env_file:
       - ./backend/.env
     depends_on:
+      - postgres
+      - redis
       - ollama
     restart: unless-stopped
 
@@ -32,6 +55,8 @@ services:
       - ./api/.env
     depends_on:
       - backend
+      - postgres
+      - redis
     restart: unless-stopped
 
   mcp-server:
@@ -44,7 +69,19 @@ services:
       - ./mcp-server/.env
     depends_on:
       - ollama
+      - redis
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: agent-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
     restart: unless-stopped
 
 volumes:
+  postgres_data:
   ollama_data:

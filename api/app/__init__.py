@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Agent API", version="0.1.0")
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,12 +14,3 @@ app.add_middleware(
 @app.get("/health")
 async def health():
     return {"status": "ok"}
-
-
-@app.get("/")
-async def root():
-    return {
-        "service": "agent-api",
-        "status": "running",
-        "routes": ["/health", "/agents", "/tasks"],
-    }

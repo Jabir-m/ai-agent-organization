@@ -1,3 +1,10 @@
-from app.config import OLLAMA_BASE_URL, OLLAMA_MODEL
+from fastapi import FastAPI
+from app.routes import router
 
-__all__ = ["OLLAMA_BASE_URL", "OLLAMA_MODEL"]
+app = FastAPI(title="Agent Backend", version="0.1.0")
+app.include_router(router)
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "backend"}
